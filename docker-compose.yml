@@ -1,0 +1,26 @@
+services:
+  # Container do SQL
+  sqlserver:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    container_name: escola_sqlserver
+    environment:
+      - SA_PASSWORD=YourStr0ngP@ssword123
+      - ACCEPT_EULA=Y
+    ports:
+      - "1433:1433"
+
+  sqlserver-init:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    container_name: escola_sqlserver_init
+    depends_on:
+      - sqlserver
+    volumes:
+      - ./script-banco.sql:/tmp/project/script-banco.sql
+    entrypoint: >
+      /bin/bash -c "
+      echo 'Aguardando o SQL Server inicializar...';
+      sleep 15;
+      /opt/mssql-tools18/bin/sqlcmd -S sqlserver -U sa -P 'YourStr0ngP@ssword123' -C -i /tmp/project/script-banco.sql;
+      echo 'Banco de tabelas criados com sucesso!';
+      "
+
