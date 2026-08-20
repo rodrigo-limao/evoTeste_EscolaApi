@@ -23,12 +23,16 @@
 - 2.6 Declarado o uso do **Gemini** como assistente de IA para apoio de arquitetura e automação de CLI.
 
 ## Etapa 3: Programação
-- 3.1 Criados os modelos Aluno, Turma e Matricula
-- 3.2 Instalado o gerenciador de pacotes `nuget`
-- 3.3 Instalado o Dapper via NuGet
-- 3.4 Criadas as Interfaces de Repositórios
-- 3.5 Ajuste de ERRO da estrutura e queries Dapper
+- 3.1 Instalado o gerenciador de pacotes `nuget`
+- 3.2 Instalado o Dapper via NuGet
+- 3.3 Criação dos Models, Interfaces e Repositories
+- 3.4 Ajuste de ERRO da estrutura e queries Dapper
   - No início do desenvolvimento dos `Sevices` eu percebi que não criei os arquivos conforme a estrurura das tabelas do `script-banco.sql`, segui a sugestão da IA que estava parecida. Mas percebi e arrumei antes de continuar o desenvolvimento.
-- 3.6 **Arquitetura de Isolamento Transacional:**
+- 3.5 **Arquitetura de Isolamento Transacional:**
   - O contrato `IAlunoRepository` ficou isolado dos outros contratos
   - Os contratos (`ITurmaRepository` e `IMatriculaRepository`) e os repositórios (`TurmaRepository` e `MatriculaRepository`) foram alterados para aceitar conexão e transação ativas compartilhadas.
+- 3.6 **Isolamento de Regras de Negócio (Services):** Toda a lógica operacional foi movida para o `EscolaService.cs`.
+- 3.7 Foram criadas exceções especializadas (`BussinesRuleException` e `NotFoundException`)
+- 3.8 **Transação ACID e Prevenção de Concorrência:** 
+  - O método `RealizarMatricula` gerencia a abertura e fechamento de conexões
+  - A verificação de vaga e o decremento ocorrem na mesma transação

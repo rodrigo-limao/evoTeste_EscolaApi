@@ -42,13 +42,17 @@
     <Compile Include="Models\Matricula.cs" />
     <Compile Include="Models\PagedResult.cs" />
     <Compile Include="Models\RelatorioAlunosByTurmaDto.cs" />
+    <Compile Include="Exceptions\BusinessRuleException.cs" />
+    <Compile Include="Exceptions\NotFoundException.cs" />
     <Compile Include="Contracts\IAlunoRepository.cs" />
     <Compile Include="Contracts\ITurmaRepository.cs" />
     <Compile Include="Contracts\IMatriculaRepository.cs" />
     <Compile Include="Contracts\IRelatorioRepository.cs" />
+    <Compile Include="Contracts\IEscolaService.cs" />
     <Compile Include="Repositories\AlunoRepository.cs" />
     <Compile Include="Repositories\TurmaRepository.cs" />
     <Compile Include="Repositories\MatriculaRepository.cs" />
     <Compile Include="Repositories\RelatorioRepository.cs" />
+    <Compile Include="Services\EscolaService.cs" />
   </ItemGroup>
 </Project>
