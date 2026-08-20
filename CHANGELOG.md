@@ -4,6 +4,18 @@ Todas as alterações notáveis deste projeto serão documentadas neste arquivo.
 
 ## [Unreleased]
 
+## [0.4.0] - 2026-08-19 : 00h29
+### Adicionado
+- Contrato de regras de negócio `IEscolaService`.
+- Implementação de `EscolaService` encapsulando toda a regra de negócio.
+- **Exceções de domínio customizadas:**
+  - `BusinessRuleException` (para violações de regras)
+  - `NotFoundException` (para recursos inexistentes)
+
+### Corrigido
+- **Transação ACID:** Implementada a transação lógica com `SqlTransaction`.
+- **Segurança Concorrente:** Validação de matrícula e vagas disponíveis dentro da mesma transação.
+
 ## [0.3.0] - 2026-08-19 : 23h08
 ### Adicionado
 - Estrutura utilitária `PagedResult<T>`.

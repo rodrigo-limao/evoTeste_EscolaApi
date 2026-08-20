@@ -1,4 +1,4 @@
-using System.Collection.Generic;
+using System.Collections.Generic;
 using EscolaApi.Core.Models;
 
 namespace EscolaApi.Core.Contracts
@@ -6,23 +6,17 @@ namespace EscolaApi.Core.Contracts
     public interface IEscolaService 
     {
         // Alunos
-        IEnumerable<Aluno> GetAlunos();
+        PagedResult<Aluno> GetAlunosPaginados(string nome, int page, int pageSize);
         Aluno GetAlunoById(int id);
         int CriarAluno(Aluno aluno);
         bool AtualizarAluno(Aluno aluno);
-        bool DeletarAluno(int id);
+        bool DeletarAluno(int id); // Exclusão lógica (Ativo = 0)
 
         // Turmas
         IEnumerable<Turma> GetTurmas();
         Turma GetTurmaById(int id);
-        int CriarTurma(Turma turma);
-        bool AtualizarTurma(Turma Turma);
-        bool DeletarTurma(int id);
 
         // Matriculas
-        IEnumerable<Matricula> GetMatriculas();
-        Matricula GetMatriculaById(int id);
-        int MatriculaAnulo(int alunoId, int turmaId);
-        bool CancelarMatricula(int id);
+        IEnumerable<RelatorioAlunosByTurmaDto> GetRelatorioAlunosByTurma();
     }
 }
