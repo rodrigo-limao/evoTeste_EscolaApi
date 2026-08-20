@@ -40,11 +40,15 @@
     <Compile Include="Models\Aluno.cs" />
     <Compile Include="Models\Turma.cs" />
     <Compile Include="Models\Matricula.cs" />
+    <Compile Include="Models\PagedResult.cs" />
+    <Compile Include="Models\RelatorioAlunosByTurmaDto.cs" />
     <Compile Include="Contracts\IAlunoRepository.cs" />
     <Compile Include="Contracts\ITurmaRepository.cs" />
     <Compile Include="Contracts\IMatriculaRepository.cs" />
+    <Compile Include="Contracts\IRelatorioRepository.cs" />
     <Compile Include="Repositories\AlunoRepository.cs" />
     <Compile Include="Repositories\TurmaRepository.cs" />
     <Compile Include="Repositories\MatriculaRepository.cs" />
+    <Compile Include="Repositories\RelatorioRepository.cs" />
   </ItemGroup>
 </Project>

@@ -31,4 +31,4 @@
   - No início do desenvolvimento dos `Sevices` eu percebi que não criei os arquivos conforme a estrurura das tabelas do `script-banco.sql`, segui a sugestão da IA que estava parecida. Mas percebi e arrumei antes de continuar o desenvolvimento.
 - 3.6 **Arquitetura de Isolamento Transacional:**
   - O contrato `IAlunoRepository` ficou isolado dos outros contratos
-  - Os contratos `ITurmaRepository` e `IMatriculaRepository` foram alterados para aceitar a mesma conexão e transação conforme especificado.
+  - Os contratos (`ITurmaRepository` e `IMatriculaRepository`) e os repositórios (`TurmaRepository` e `MatriculaRepository`) foram alterados para aceitar conexão e transação ativas compartilhadas.

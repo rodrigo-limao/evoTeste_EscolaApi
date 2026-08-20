@@ -5,7 +5,7 @@ namespace EscolaApi.Core.Contracts
 {
     public interface IAlunoRepository
     {
-        IEnumerable<Aluno> GetTodos();
+        PagedResult<Aluno> GetPaginado(string nome, int page, int pageSize);
         Aluno GetById(int id);
         int Criar(Aluno aluno);
         bool Atualizar(Aluno aluno);

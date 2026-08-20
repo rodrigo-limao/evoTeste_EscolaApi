@@ -19,14 +19,39 @@ namespace EscolaApi.Core.Repositories
 
         private IDbConnection Connection => new SqlConnection(_connectionString);
         
-        public IEnumerable<Aluno> GetTodos()
+        public PagedResult<Aluno> GetPaginado(string nome, int page, int pageSize)
         {
             using (var db = Connection)
             {
+                var offset = (page -1) * pageSize;
                 var sql = @"
+                    SELECT COUNT(1)
+                    FROM Aluno
+                    WHERE (@Nome IS NULL OR Nome LIKE '%' + @Nome + '%');
+
                     SELECT Id, Nome, Email, DataNascimento, Ativo, DataCadastro
-                    FROM Aluno"; 
-                return db.Query<Aluno>(sql);
+                    FROM Aluno 
+                    WHERE (@Nome IS NULL OR Nome LIKE '%' + @Nome + '%')
+                    ORDER BY Id
+                    OFFSET @Offset ROWS FETCH NEXT @PageSize ROWS ONLY;";
+
+                using (var multi = db.QueryMultiple(sql, new
+                    {
+                        Nome = nome,
+                        Offset = offset,
+                        PageSize = pageSize
+                    }))
+                {
+                    var total = multi.Read<int>().Single();
+                    var items = multi.Read<Aluno>();
+                    return new PagedResult<Aluno>
+                    {
+                        TotalItems = total,
+                        Page = page,
+                        PageSize = pageSize,
+                        Items = items
+                    };
+                }
             }
         }
 
