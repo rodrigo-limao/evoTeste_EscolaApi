@@ -21,3 +21,14 @@
   - **Validação Local da Solution:** A solution não compilou de primeira, pois foi preciso criar blocos `<PropertyGroup>` para cada projeto mapeando onde os binários são salvos (`OutputPath`)
   - **Validação local do Docker:** O docker não conseguiu compilar, pois o container com IIS/Framework 4.8 exige um runtime *Windows Containers* no Docker Desktop. Com isso foi retirado do `docker-compose.yml` e a API será executada na instância local do IIS na própria máquina.
 - 2.6 Declarado o uso do **Gemini** como assistente de IA para apoio de arquitetura e automação de CLI.
+
+## Etapa 3: Programação
+- 3.1 Criados os modelos Aluno, Turma e Matricula
+- 3.2 Instalado o gerenciador de pacotes `nuget`
+- 3.3 Instalado o Dapper via NuGet
+- 3.4 Criadas as Interfaces de Repositórios
+- 3.5 Ajuste de ERRO da estrutura e queries Dapper
+  - No início do desenvolvimento dos `Sevices` eu percebi que não criei os arquivos conforme a estrurura das tabelas do `script-banco.sql`, segui a sugestão da IA que estava parecida. Mas percebi e arrumei antes de continuar o desenvolvimento.
+- 3.6 **Arquitetura de Isolamento Transacional:**
+  - O contrato `IAlunoRepository` ficou isolado dos outros contratos
+  - Os contratos (`ITurmaRepository` e `IMatriculaRepository`) e os repositórios (`TurmaRepository` e `MatriculaRepository`) foram alterados para aceitar conexão e transação ativas compartilhadas.
