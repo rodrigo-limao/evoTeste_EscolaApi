@@ -31,6 +31,20 @@
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Core" />
+    <Reference Include="Dapper">
+        <HintPath>..\packages\Dapper.2.0.123\lib\net461\Dapper.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <ItemGroup>
+    <Compile Include="Models\Aluno.cs" />
+    <Compile Include="Models\Turma.cs" />
+    <Compile Include="Models\Matricula.cs" />
+    <Compile Include="Contracts\IAlunoRepository.cs" />
+    <Compile Include="Contracts\ITurmaRepository.cs" />
+    <Compile Include="Contracts\IMatriculaRepository.cs" />
+    <Compile Include="Repositories\AlunoRepository.cs" />
+    <Compile Include="Repositories\TurmaRepository.cs" />
+    <Compile Include="Repositories\MatriculaRepository.cs" />
+  </ItemGroup>
 </Project>
