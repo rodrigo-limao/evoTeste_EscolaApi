@@ -4,6 +4,20 @@ Todas as alterações notáveis deste projeto serão documentadas neste arquivo.
 
 ## [Unreleased]
 
+## [0.5.0] - 2026-08-21
+### Adicionado
+- Implementação de `AlunosController`, `TurmasController`, `MatriculasController` e `RelatoriosController`.
+- Configuração do pipeline do ASP.NET Web API 2 e ativação do Roteamento por Atributos (`Attribute Routing`).
+- Criação do `CustomDependencyResolver` para gerenciar as dependências de Controllers via Pure DI no ciclo de vida web.
+- Criação do arquivo de inicialização `Global.asax` e mapeamento de rotas padrão em `WebApiConfig.cs`.
+
+### Corrigido
+- **Mapeamento Semântico de Respostas HTTP:** Interceptação elegante de exceções customizadas para retornar os status HTTP
+  - `200 OK` / `201 Created` para sucesso
+  - `400 BadRequest` para erros de entrada
+  - `404 NotFound` para recursos inexistentes
+  - `409 Conflict` para quebras de regras de negócio
+
 ## [0.4.0] - 2026-08-19 : 00h29
 ### Adicionado
 - Contrato de regras de negócio `IEscolaService`.

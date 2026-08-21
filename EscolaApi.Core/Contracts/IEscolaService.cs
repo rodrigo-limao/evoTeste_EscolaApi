@@ -16,7 +16,10 @@ namespace EscolaApi.Core.Contracts
         IEnumerable<Turma> GetTurmas();
         Turma GetTurmaById(int id);
 
-        // Matriculas
+        // Matrículas
+        int RealizarMatricula(int alunoId, int turmaId);
+
+        // Relatórios
         IEnumerable<RelatorioAlunosByTurmaDto> GetRelatorioAlunosByTurma();
     }
 }

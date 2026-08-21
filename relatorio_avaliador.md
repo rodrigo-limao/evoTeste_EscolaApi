@@ -24,6 +24,7 @@
 
 ## Etapa 3: Programação
 - 3.1 Instalado o gerenciador de pacotes `nuget`
+  - Foi precriso restaurar as fontes dos pacotes `nuget` para conseguir instalar as versões `5.2.9`
 - 3.2 Instalado o Dapper via NuGet
 - 3.3 Criação dos Models, Interfaces e Repositories
 - 3.4 Ajuste de ERRO da estrutura e queries Dapper
@@ -36,3 +37,9 @@
 - 3.8 **Transação ACID e Prevenção de Concorrência:** 
   - O método `RealizarMatricula` gerencia a abertura e fechamento de conexões
   - A verificação de vaga e o decremento ocorrem na mesma transação
+- 3.9 Apareceram vários erros na compilação que foram tratados sem ajuda da IA
+- 3.10 Implementados de os quatro controladores requeridos.
+- 3.11 Habilitação do `Attribute Routing` no `WebApiConfig.cs` para fornecer URLs RESTful explícitas.
+- 3.12 Criação do `CustomDependencyResolver` interceptando o pipeline de ativação do ASP.NET.
+- 3.13 Cumprimento exato do requisito técnico de mapeamento de status HTTP.
+
