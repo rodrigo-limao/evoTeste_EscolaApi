@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.Web.Http.Dependencies;
 using EscolaApi.Core.Contracts;
+using EscolaApi.Core.Infrastructure;
 using EscolaApi.Core.Repositories;
 using EscolaApi.Core.Services;
 
@@ -27,7 +28,11 @@ namespace EscolaApi.LegacyWeb.Infrastructure
             var matriculaRepository = new MatriculaRepository(_connectionString);
             var relatorioRepository = new RelatorioRepository(_connectionString);
 
-            var service = new EscolaService(alunoRepository, turmaRepository, matriculaRepository, relatorioRepository, _connectionString);
+            // Instancia a fábrica de conexão real
+            var connectionFactory = new SqlConnectionFactory(_connectionString);
+
+            // Injeta as dependências e a fábrica no serviço (Pure DI)
+            var service = new EscolaService(alunoRepository, turmaRepository, matriculaRepository, relatorioRepository, connectionFactory);
 
             // Tabela de resolução: mais eficiente que Ifs e Switch
             var factories = new Dictionary<Type, Func<object>>

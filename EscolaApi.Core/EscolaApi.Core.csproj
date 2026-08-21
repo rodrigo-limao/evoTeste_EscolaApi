@@ -49,6 +49,8 @@
     <Compile Include="Contracts\IMatriculaRepository.cs" />
     <Compile Include="Contracts\IRelatorioRepository.cs" />
     <Compile Include="Contracts\IEscolaService.cs" />
+    <Compile Include="Contracts\IDbConnectionFactory.cs" />
+    <Compile Include="Infrastructure\SqlConnectionFactory.cs" />
     <Compile Include="Repositories\AlunoRepository.cs" />
     <Compile Include="Repositories\TurmaRepository.cs" />
     <Compile Include="Repositories\MatriculaRepository.cs" />
