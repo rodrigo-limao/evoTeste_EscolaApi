@@ -43,3 +43,10 @@
 - 3.12 Criação do `CustomDependencyResolver` interceptando o pipeline de ativação do ASP.NET.
 - 3.13 Cumprimento exato do requisito técnico de mapeamento de status HTTP.
 
+## Etapa 4: Bônus
+- 4.1 Criada branch `feature/etapa-3-issue-10-tests` para o desenvolvimento dos testes.
+- 4.2 Introdução do Design Pattern **Factory (`IDbConnectionFactory`)**.
+- 4.3 Desenvolvimento `FakeDbConnection` e `FakeDbTransaction` eliminando qualquer dependência de rede ou SQL Server físico para a suíte de testes.
+- 4.4 Implementação de **6 cenários de teste** cobrindo todas as validações de regras de negócio de matrícula.
+- 4.5 Suíte validada e executada localmente via `vstest.console.exe` com 100% de sucesso (6 testes aprovados).
+

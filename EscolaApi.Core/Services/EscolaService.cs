@@ -14,20 +14,20 @@ namespace EscolaApi.Core.Services
         private readonly ITurmaRepository _turmaRepository;
         private readonly IMatriculaRepository _matriculaRepository;
         private readonly IRelatorioRepository _relatorioRepository;
-        private readonly string _connectionString;
+        private readonly IDbConnectionFactory _connectionFactory;
 
         public EscolaService (
             IAlunoRepository alunoRepository,
             ITurmaRepository turmaRepository,
             IMatriculaRepository matriculaRepository,
             IRelatorioRepository relatorioRepository,
-            string connectionString)
+            IDbConnectionFactory connectionFactory)
         {
             _alunoRepository = alunoRepository;
             _turmaRepository = turmaRepository;
             _matriculaRepository = matriculaRepository;
             _relatorioRepository = relatorioRepository;
-            _connectionString = connectionString;
+            _connectionFactory = connectionFactory;
         }
 
         #region Alunos
@@ -107,7 +107,7 @@ namespace EscolaApi.Core.Services
                 throw new BusinessRuleException("Aluno inativo. Não pode realizar a matrícula.");
 
                 // Transação ACID
-                using (var conn = new SqlConnection(_connectionString))
+                using (var conn = _connectionFactory.CreateConnection())
                 {
                     conn.Open();
                     using (var tran = conn.BeginTransaction(IsolationLevel.ReadCommitted))

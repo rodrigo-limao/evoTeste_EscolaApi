@@ -4,7 +4,15 @@ Todas as alterações notáveis deste projeto serão documentadas neste arquivo.
 
 ## [Unreleased]
 
-## [0.5.0] - 2026-08-21
+## [0.6.0] - 2026-08-21 : 19h06
+### Adicionado
+- Projeto de testes unitários `EscolaApi.Tests`.
+- Interface de abstração `IDbConnectionFactory` para desacoplamento de banco.
+- Dublês de teste (*Fakes*) de conexões, transações do ADO.NET e repositórios em memória.
+- 6 cenários de testes unitários de regras de negócio.
+
+
+## [0.5.0] - 2026-08-21 : 14h15
 ### Adicionado
 - Implementação de `AlunosController`, `TurmasController`, `MatriculasController` e `RelatoriosController`.
 - Configuração do pipeline do ASP.NET Web API 2 e ativação do Roteamento por Atributos (`Attribute Routing`).
