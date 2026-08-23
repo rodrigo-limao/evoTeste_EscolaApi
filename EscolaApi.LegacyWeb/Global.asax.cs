@@ -4,9 +4,9 @@ using System.Web.Http;
 using EscolaApi.LegacyWeb;
 using EscolaApi.LegacyWeb.Infrastructure;
 
-namespace EscolApi.LegacyWeb
+namespace EscolaApi.LegacyWeb
 {
-    public class WepApiApplication : HttpApplication
+    public class WebApiApplication : HttpApplication
     {
         protected void Application_Start(object sender, EventArgs e)
         {

@@ -31,6 +31,10 @@
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Web.Extensions" />
+    <Reference Include="StackExchange.Redis, Version=1.2.6.0, Culture=neutral, processorArchitecture=MSIL">
+        <HintPath>..\packages\StackExchange.Redis.1.2.6\lib\net46\StackExchange.Redis.dll</HintPath>
+    </Reference>
     <Reference Include="Dapper">
         <HintPath>..\packages\Dapper.2.0.123\lib\net461\Dapper.dll</HintPath>
     </Reference>
@@ -44,6 +48,7 @@
     <Compile Include="Models\RelatorioAlunosByTurmaDto.cs" />
     <Compile Include="Exceptions\BusinessRuleException.cs" />
     <Compile Include="Exceptions\NotFoundException.cs" />
+    <Compile Include="Contracts\ICacheService.cs" />
     <Compile Include="Contracts\IAlunoRepository.cs" />
     <Compile Include="Contracts\ITurmaRepository.cs" />
     <Compile Include="Contracts\IMatriculaRepository.cs" />
@@ -55,6 +60,7 @@
     <Compile Include="Repositories\TurmaRepository.cs" />
     <Compile Include="Repositories\MatriculaRepository.cs" />
     <Compile Include="Repositories\RelatorioRepository.cs" />
+    <Compile Include="Services\RedisCacheService.cs" />
     <Compile Include="Services\EscolaService.cs" />
   </ItemGroup>
 </Project>

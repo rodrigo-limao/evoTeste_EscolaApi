@@ -40,7 +40,13 @@ namespace EscolaApi.LegacyWeb.Controllers
             catch (BusinessRuleException ex)
             {
                 // 409 Conflict (turma sem vaga, aluno inativo ou duplicado, ...)
-                return Content(System.Net.HttpStatusCode.Conflict, new { Message = ex.Message });
+                return Content(System.Net.HttpStatusCode.Conflict, new
+                {
+                    status = 409,
+                    title = "Regra de Negócio Violada",
+                    detail = ex.Message,
+                    instance = "/api/matriculas"
+                });
             }
             catch (Exception ex)
             {

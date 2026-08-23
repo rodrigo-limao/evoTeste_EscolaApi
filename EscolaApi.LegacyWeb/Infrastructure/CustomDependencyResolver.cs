@@ -12,12 +12,16 @@ namespace EscolaApi.LegacyWeb.Infrastructure
     public class CustomDependencyResolver : IDependencyResolver
     {
         private readonly string _connectionString;
+        private readonly ICacheService _cacheService;
 
         public CustomDependencyResolver()
         {
             // Busca a connection centralizada do Web.Config ou fallback padrão
             _connectionString = ConfigurationManager.ConnectionStrings["EscolaDB"]?.ConnectionString ??
                 "Server=localhost,1433;Database=TesteEscola;User Id=sa;Password=YourStr0ngP@ssword123;TrustServerCertificate=True;";
+
+            var redisConfig = ConfigurationManager.ConnectionStrings["RedisConnection"]?.ConnectionString ?? "localhost:6379";
+            _cacheService = new RedisCacheService(redisConfig); // Singleton Compartilhado
         }
 
         public object GetService(Type serviceType)
@@ -32,7 +36,7 @@ namespace EscolaApi.LegacyWeb.Infrastructure
             var connectionFactory = new SqlConnectionFactory(_connectionString);
 
             // Injeta as dependências e a fábrica no serviço (Pure DI)
-            var service = new EscolaService(alunoRepository, turmaRepository, matriculaRepository, relatorioRepository, connectionFactory);
+            var service = new EscolaService(alunoRepository, turmaRepository, matriculaRepository, relatorioRepository, connectionFactory, _cacheService);
 
             // Tabela de resolução: mais eficiente que Ifs e Switch
             var factories = new Dictionary<Type, Func<object>>

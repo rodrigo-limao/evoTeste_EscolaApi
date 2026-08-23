@@ -49,4 +49,9 @@
 - 4.3 Desenvolvimento `FakeDbConnection` e `FakeDbTransaction` eliminando qualquer dependência de rede ou SQL Server físico para a suíte de testes.
 - 4.4 Implementação de **6 cenários de teste** cobrindo todas as validações de regras de negócio de matrícula.
 - 4.5 Suíte validada e executada localmente via `vstest.console.exe` com 100% de sucesso (6 testes aprovados).
+- 4.6 Criada branch `feature/etapa-4-issue-11-cache` para o desenvolvimento de melhorias, cache e estabilização de rede.
+- 4.7 Reversão do `System.Text.Json` para o **`Newtonsoft.Json`** nativo do Web API 2 para garantir compatibilidade 100% com o .NET Framework 4.8.
+- 4.8 Correção física da query SQL no `TurmaRepository` sanando o erro de digitação do campo `VagasDisponiveis` e o parâmetro escalar `@TurmaId`.
+- 4.9 Adoção do padrão **RFC 7807 (Problem Details)** no controlador de matrículas para fornecer respostas HTTP ricas e legíveis em cenários de conflitos de regras de negócio (HTTP 409).
+- 4.10 Configuração global de nomenclatura *camelCase* e indentação formatada para todas as respostas JSON da API.
 
