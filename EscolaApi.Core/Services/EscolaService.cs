@@ -15,26 +15,33 @@ namespace EscolaApi.Core.Services
         private readonly IMatriculaRepository _matriculaRepository;
         private readonly IRelatorioRepository _relatorioRepository;
         private readonly IDbConnectionFactory _connectionFactory;
+        private readonly ICacheService _cacheService;
+
+        private const string TurmasCacheKey = "turmas_disponiveis_list";
 
         public EscolaService (
             IAlunoRepository alunoRepository,
             ITurmaRepository turmaRepository,
             IMatriculaRepository matriculaRepository,
             IRelatorioRepository relatorioRepository,
-            IDbConnectionFactory connectionFactory)
+            IDbConnectionFactory connectionFactory,
+            ICacheService cacheService)
         {
             _alunoRepository = alunoRepository;
             _turmaRepository = turmaRepository;
             _matriculaRepository = matriculaRepository;
             _relatorioRepository = relatorioRepository;
             _connectionFactory = connectionFactory;
+            _cacheService = cacheService;
         }
 
         #region Alunos
+
         public PagedResult<Aluno> GetAlunosPaginados(string nome, int page, int pageSize)
         {
             if (page <= 0) page = 1;
             if (pageSize <= 0) pageSize = 10;
+
             return _alunoRepository.GetPaginado(nome, page, pageSize);
         }
 
@@ -43,15 +50,21 @@ namespace EscolaApi.Core.Services
             var aluno = _alunoRepository.GetById(id);
             if (aluno == null)
                 throw new NotFoundException("Aluno não encontrado.");
+
             return aluno;
         }
 
         public int CriarAluno(Aluno aluno)
         {
+            if (aluno == null)
+                throw new BusinessRuleException("Os dados do aluno não foram fornecidos.");
+
             if (string.IsNullOrWhiteSpace(aluno.Nome))
                 throw new BusinessRuleException("O nome do aluno é obrigatório.");
+            
             if (string.IsNullOrWhiteSpace(aluno.Email))
                 throw new BusinessRuleException("O e-mail do aluno é obrigatório.");
+            
             if (aluno.DataNascimento == default)
                 throw new BusinessRuleException("A data de nascimento do aluno é obrigatória.");
 
@@ -60,12 +73,16 @@ namespace EscolaApi.Core.Services
 
         public bool AtualizarAluno(Aluno aluno)
         {
+            if (aluno == null)
+                throw new BusinessRuleException("Os dados do aluno não foram fornecidos.");
+
             var existente = _alunoRepository.GetById(aluno.Id);
             if (existente == null)
                 throw new NotFoundException("Aluno não encontrado para atualização.");
 
             if (string.IsNullOrWhiteSpace(aluno.Nome))
                 throw new BusinessRuleException("O nome do aluno é obrigatório.");
+            
             if (string.IsNullOrWhiteSpace(aluno.Email))
                 throw new BusinessRuleException("O e-mail do aluno é obrigatório.");
  
@@ -80,21 +97,42 @@ namespace EscolaApi.Core.Services
 
             return _alunoRepository.Deletar(id);
          }
+
         #endregion
 
         #region Turmas
-        public IEnumerable<Turma> GetTurmas() => _turmaRepository.GetTodas();
+        
+        public IEnumerable<Turma> GetTurmas()
+        {
+            // 1. Tenta obter do cache do Redis
+            var turmasCached = _cacheService.Get<IEnumerable<Turma>>(TurmasCacheKey);
+            if (turmasCached != null)
+            {
+                return turmasCached;
+            }
+
+            // 2. Não encontrou no cache, pega no banco
+            var turmas = _turmaRepository.GetTodas();
+
+            // 3. Salva no Redis com expiração de 5 minutos
+            _cacheService.Set(TurmasCacheKey, turmas, 5);
+
+            return turmas;
+        }
 
         public Turma GetTurmaById(int id)
         {
             var turma = _turmaRepository.GetById(id);
             if (turma == null)
                 throw new NotFoundException("Turma não encontrada");
+
             return turma;
         }
+        
         #endregion
 
         #region Matrículas (Controle de Transação ACID)
+        
         public int RealizarMatricula(int alunoId, int turmaId)
         {
             // Validação 1: O aluno existe? (Rápida e isolada fora da transação)
@@ -106,62 +144,71 @@ namespace EscolaApi.Core.Services
             if (aluno.Ativo == false)
                 throw new BusinessRuleException("Aluno inativo. Não pode realizar a matrícula.");
 
-                // Transação ACID
-                using (var conn = _connectionFactory.CreateConnection())
+            // Transação ACID
+            using (var conn = _connectionFactory.CreateConnection())
+            {
+                conn.Open();
+                using (var tran = conn.BeginTransaction(IsolationLevel.ReadCommitted))
                 {
-                    conn.Open();
-                    using (var tran = conn.BeginTransaction(IsolationLevel.ReadCommitted))
+                    try
                     {
-                        try
+                        // Validação 3: A turma existe?
+                        var turma = _turmaRepository.GetById(turmaId, conn, tran);
+                        if (turma == null)
+                            throw new NotFoundException("Turma não encontrada.");
+
+                        // Validação 4: Existem vagas disponíveis?
+                        if (turma.VagasDisponiveis <= 0)
+                            throw new BusinessRuleException("Turma sem vagas disponíveis.");
+
+                        // Validação 5: O aluno já está nessa turma?
+                        var isMatriculado = _matriculaRepository.AlunoIsMatriculado(alunoId, turmaId, conn, tran);
+                        if (isMatriculado)
+                            throw new BusinessRuleException("Aluno já matriculado nesta turma.");
+
+                        // Criar e gravar a matrícula
+                        var matricula = new Matricula
                         {
-                            // Validação 3: A turma existe?
-                            var turma = _turmaRepository.GetById(turmaId, conn, tran);
-                            if (turma == null)
-                                throw new NotFoundException("Turma não encontrada.");
+                            AlunoId = alunoId,
+                            TurmaId = turmaId,
+                            DataMatricula = DateTime.Now
+                        };
+                        int matriculaId = _matriculaRepository.Criar(matricula, conn, tran);
 
-                            // Validação 4: Existem vagas disponíveis?
-                            if (turma.VagasDisponiveis <= 0)
-                                throw new BusinessRuleException("Turma sem vagas disponíveis.");
+                        // Decrementar a vaga da turma
+                        bool isDecrementado = _turmaRepository.DecrementarVaga(turmaId, conn, tran);
+                        if (isDecrementado == false)
+                            throw new BusinessRuleException("Não foi possível reservar a vaga.");
 
-                            // Validação 5: O aluno já está nessa turma?
-                            var isMatriculado = _matriculaRepository.AlunoIsMatriculado(alunoId, turmaId, conn, tran);
-                            if (isMatriculado)
-                                throw new BusinessRuleException("Aluno já matriculado nesta turma.");
+                        // Se chegou aqui, grava
+                        tran.Commit();
 
-                            // Criar e gravar a matrícula
-                            var matricula = new Matricula
-                            {
-                                AlunoId = alunoId,
-                                TurmaId = turmaId,
-                                DataMatricula = DateTime.Now
-                            };
-                            int matriculaId = _matriculaRepository.Criar(matricula, conn, tran);
+                        // [BÔNUS - INVALIDAÇÃO PROATIVA DE CACHE]
+                        // Ao remover a chave, o próximo "GET /api/turmas" sofrerá um Cache Miss
+                        // e atualizará o Redis com o novo saldo real de vagas decrementado!
+                        _cacheService.Remove("turmas_disponiveis_list");
 
-                            // Decrementar a vaga da turma
-                            bool isDecrementado = _turmaRepository.DecrementarVaga(turmaId, conn, tran);
-                            if (isDecrementado == false)
-                                throw new BusinessRuleException("Não foi possível reservar a vaga.");
-
-                            // Se chegou aqui, grava
-                            tran.Commit();
-                            return matriculaId;
-                         }
-                        catch
-                        {
-                            // Qualquer falha reverte tudo
-                            tran.Rollback();
-                            throw;
-                        }
-                   }
-                }
+                        return matriculaId;
+                     }
+                    catch
+                    {
+                        // Qualquer falha reverte tudo
+                        tran.Rollback();
+                        throw;
+                    }
+               }
+            }
         }
+        
         #endregion
 
         #region Relatórios
+        
         public IEnumerable<RelatorioAlunosByTurmaDto> GetRelatorioAlunosByTurma()
         {
             return _relatorioRepository.GetAlunosByTurma();
         }
+        
         #endregion
     }
 }

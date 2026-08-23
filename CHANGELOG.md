@@ -4,6 +4,16 @@ Todas as alterações notáveis deste projeto serão documentadas neste arquivo.
 
 ## [Unreleased]
 
+## [0.7.0] - 2026-08-23
+### Adicionado
+- Implementação do padrão RFC 7807 (Problem Details) no `MatriculasController` para tratamento amigável de exceções de regra de negócio (`BusinessRuleException`).
+- Configuração global de indentação e nomenclatura camelCase para respostas JSON usando o Newtonsoft.Json.
+
+### Corrigido
+- Reversão completa do `System.Text.Json` para o `Newtonsoft.Json` nativo do Web API 2.
+- Correção de erro de digitação de coluna SQL (`VagasDiponiveis` para `VagasDisponiveis`) no `TurmaRepository`.
+- Ajuste de discrepância de nomenclatura no parâmetro dinâmico do Dapper (`@TurmaId`) no método `DecrementarVaga`.
+
 ## [0.6.0] - 2026-08-21 : 19h06
 ### Adicionado
 - Projeto de testes unitários `EscolaApi.Tests`.

@@ -26,6 +26,7 @@ namespace EscolaApi.Tests.Services
             _turmaRepo = new FakeTurmaRepository();
             _matriculaRepo = new FakeMatriculaRepository();
             _relatorioRepo = new FakeRelatorioRepository();
+            var fakeCache = new FakeCacheService();
 
             // Instancia a fábrica abstrata
             var fakeConnectionFactory = new FakeConnectionFactory();
@@ -38,7 +39,7 @@ namespace EscolaApi.Tests.Services
             _turmaRepo.Turmas.Add(new Turma { Id = 20, Nome = "Turma B", VagasDisponiveis = 0, VagasTotal = 5 });
 
             // Instancia o serviço injetando as dependências falsas (Pure DI)
-            _service = new EscolaService(_alunoRepo, _turmaRepo, _matriculaRepo, _relatorioRepo, fakeConnectionFactory);
+            _service = new EscolaService(_alunoRepo, _turmaRepo, _matriculaRepo, _relatorioRepo, fakeConnectionFactory, fakeCache);
         }
 
         [TestMethod]
@@ -98,6 +99,14 @@ namespace EscolaApi.Tests.Services
     }
 
     #region Repositórios Falsos (Fake Test Doubles)
+
+    public class FakeCacheService : ICacheService
+    {
+        private readonly Dictionary<string, object> _storage = new Dictionary<string, object>();
+        public T Get<T>(string key) => _storage.ContainsKey(key) ? (T)_storage[key] : default(T);
+        public void Set(string key, object value, int expirationMinutes) => _storage[key] = value;
+        public void Remove(string key) => _storage.Remove(key);
+    }
 
     public class FakeDbConnection : IDbConnection
     {

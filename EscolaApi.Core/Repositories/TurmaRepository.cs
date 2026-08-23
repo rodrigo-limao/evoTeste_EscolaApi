@@ -39,7 +39,7 @@ namespace EscolaApi.Core.Repositories
             try
             {
                 return db.QueryFirstOrDefault<Turma>(
-                    @"SELECT Id, Nome, Periodo, VagasTotal, VagasDiponiveis
+                    @"SELECT Id, Nome, Periodo, VagasTotal, VagasDisponiveis
                       FROM Turma
                       WHERE Id = @Id",
                     new { Id = id },
@@ -99,7 +99,7 @@ namespace EscolaApi.Core.Repositories
                   SET VagasDisponiveis = VagasDisponiveis - 1
                   WHERE Id = @TurmaId
                     AND VagasDisponiveis > 0",
-                new { Id = turmaId},
+                new { TurmaId = turmaId},
                 transaction
             ) > 0;
         }
