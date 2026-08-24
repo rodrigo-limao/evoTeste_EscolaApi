@@ -51,6 +51,7 @@ namespace EscolaApi.LegacyWeb.Controllers
         }
 
         [HttpPost]
+        [Route("")]
         public IHttpActionResult Criar([FromBody] Aluno aluno)
         {
             if (aluno == null)

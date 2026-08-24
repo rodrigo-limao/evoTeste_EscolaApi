@@ -16,6 +16,7 @@ namespace EscolaApi.LegacyWeb.Controllers
         }
 
         [HttpGet]
+        [Route("")]
         public IHttpActionResult GetTodas()
         {
             try
