@@ -1,4 +1,5 @@
 using System.Web.Http;
+using System.Web.Http.Cors;
 using Newtonsoft.Json.Serialization;
 
 namespace EscolaApi.LegacyWeb
@@ -7,6 +8,10 @@ namespace EscolaApi.LegacyWeb
     {
         public static void Register(HttpConfiguration config)
         {
+            // CORS CONFIG: Permite requisições do React
+            var cors = new EnableCorsAttribute("http://localhost:5173", "*", "*");
+            config.EnableCors(cors);
+
             // Habilita Roteamento por atributos
             config.MapHttpAttributeRoutes();
 

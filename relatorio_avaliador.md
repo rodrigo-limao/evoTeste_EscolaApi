@@ -43,15 +43,28 @@
 - 3.12 Criação do `CustomDependencyResolver` interceptando o pipeline de ativação do ASP.NET.
 - 3.13 Cumprimento exato do requisito técnico de mapeamento de status HTTP.
 
-## Etapa 4: Bônus
-- 4.1 Criada branch `feature/etapa-3-issue-10-tests` para o desenvolvimento dos testes.
+## Etapa 4: Bônus - Testes
+- 4.1 Criada branch `feature/etapa-4-issue-10-tests` para o desenvolvimento dos testes.
 - 4.2 Introdução do Design Pattern **Factory (`IDbConnectionFactory`)**.
 - 4.3 Desenvolvimento `FakeDbConnection` e `FakeDbTransaction` eliminando qualquer dependência de rede ou SQL Server físico para a suíte de testes.
 - 4.4 Implementação de **6 cenários de teste** cobrindo todas as validações de regras de negócio de matrícula.
 - 4.5 Suíte validada e executada localmente via `vstest.console.exe` com 100% de sucesso (6 testes aprovados).
+
+## Etapa 4: Bônus - Cache
 - 4.6 Criada branch `feature/etapa-4-issue-11-cache` para o desenvolvimento de melhorias, cache e estabilização de rede.
 - 4.7 Reversão do `System.Text.Json` para o **`Newtonsoft.Json`** nativo do Web API 2 para garantir compatibilidade 100% com o .NET Framework 4.8.
 - 4.8 Correção física da query SQL no `TurmaRepository` sanando o erro de digitação do campo `VagasDisponiveis` e o parâmetro escalar `@TurmaId`.
 - 4.9 Adoção do padrão **RFC 7807 (Problem Details)** no controlador de matrículas para fornecer respostas HTTP ricas e legíveis em cenários de conflitos de regras de negócio (HTTP 409).
 - 4.10 Configuração global de nomenclatura *camelCase* e indentação formatada para todas as respostas JSON da API.
+
+## Etapa 4: Bônus - Interface (Vite + React)
+- 4.11 Criação do projeto SPA para o painel administrativo.
+- 4.12 Estilização visual utilizando **Tailwind CSS v4** e ícones do **Font Awesome** via CDN.
+- 4.13 Implementação do ciclo de vida reativo com `useState` e `useEffect`.
+- 4.14 Conclusão do CRUD completo de Alunos integrado de ponta a ponta:
+  - **Listagem e Busca:** Filtro reativo por nome integrado à paginação nativa da API.
+  - **Cadastro (POST):** Integração via modal dinâmico no padrão de banco de dados.
+  - **Edição (PUT):** Unificação de modal reusando estados e tratamento de formato de datas (`YYYY-MM-DD`).
+  - **Exclusão Lógica (DELETE):** Inativação de alunos preservando dados físicos e atualizando dinamicamente a grade de registros.
+- 4.15 Arquitetura de Software: Preparação para a refatoração baseada no princípio de Responsabilidade Única (divisão em componentes visuais e camada de serviços).
 
