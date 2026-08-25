@@ -66,5 +66,7 @@
   - **Cadastro (POST):** Integração via modal dinâmico no padrão de banco de dados.
   - **Edição (PUT):** Unificação de modal reusando estados e tratamento de formato de datas (`YYYY-MM-DD`).
   - **Exclusão Lógica (DELETE):** Inativação de alunos preservando dados físicos e atualizando dinamicamente a grade de registros.
-- 4.15 Arquitetura de Software: Preparação para a refatoração baseada no princípio de Responsabilidade Única (divisão em componentes visuais e camada de serviços).
-
+- 4.15 Arquitetura de Software: Preparação para a refatoração baseada no DRY (Don't Repeat Yourself).
+- 4.16 Integração visual com o endpoint `GET /api/relatorios/alunos-por-turma` do back-end.
+- 4.17 Renderização mostrando total de matrículas, vagas restantes e cálculos em tempo real de ocupação de cada turma com barra de progresso.
+- 4.18 Tratamento defensivo de serialização JSON suportando PascalCase ou camelCase.

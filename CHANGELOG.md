@@ -4,6 +4,17 @@ Todas as alterações notáveis deste projeto serão documentadas neste arquivo.
 
 ## [Unreleased]
 
+## [1.0.0] - 2026-08-25
+### Adicionado
+- **Módulo Front-end SPA (Vite + React + Tailwind CSS v4):**
+  - Implementação de arquitetura modular dividida em componentes de domínio (`AbaAlunos`, `AbaMatriculas`, `AbaRelatorios`).
+  - Criação de uma camada de serviços dedicada para abstrair as requisições HTTP (`AlunoService`, `TurmaService`, `MatriculaService`, `RelatorioService`).
+  - Centralização da configuração de comunicação da API em um único ponto (`apiConfig.js`).
+  - Estilização visual moderna e responsiva integrada ao **Font Awesome** via CDN.
+- Tela de relatórios de ocupação exibindo dados agregados diretamente das queries em Dapper com barra de progresso em CSS dinâmico.
+- Formatação de datas de nascimento de `YYYY-MM-DD` para `DD/MM/YYYY`.
+- Captura e tratamento amigável de respostas HTTP `409 Conflict`.
+
 ## [0.7.0] - 2026-08-23
 ### Adicionado
 - Implementação do padrão RFC 7807 (Problem Details) no `MatriculasController` para tratamento amigável de exceções de regra de negócio (`BusinessRuleException`).
