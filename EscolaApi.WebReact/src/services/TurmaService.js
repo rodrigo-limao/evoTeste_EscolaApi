@@ -1,9 +1,8 @@
-const API_URL = 'http://localhost:8080/api';
+import { apiClient } from "./apiClient";
 
-export const turmaService = {
+export const TurmaService = {
     async listar() {
-        const url = `${API_URL}/turmas`;
-        const resposta = await fetch(url);
+        const resposta = await apiClient(`/turmas`);
         if (!resposta.ok) throw new Error('Erro ao buscar turmas.');
         return await resposta.json();
     }

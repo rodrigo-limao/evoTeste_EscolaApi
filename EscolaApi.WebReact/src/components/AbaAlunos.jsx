@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { alunoService } from '../services/AlunoService';
+import { AlunoService } from '../services/AlunoService';
 
 export default function AbaAlunos() {
     // Estados para listagem e busca
@@ -26,7 +26,7 @@ export default function AbaAlunos() {
     // Função para carregar alunos da API
     const carregarAlunos = async () => {
         try {
-            const dados = await alunoService.listar(buscaNome, pagina);
+            const dados = await AlunoService.listar(buscaNome, pagina);
             setAlunos(dados.items || []);
             setTotalAlunos(dados.totalItems || 0);
         } catch (e) {
@@ -78,9 +78,9 @@ export default function AbaAlunos() {
         try {
             let resposta;
             if (idEdicao) {
-                resposta = await alunoService.atualizar(idEdicao, cadastro);
+                resposta = await AlunoService.atualizar(idEdicao, cadastro);
             } else {
-                resposta = await alunoService.cadastrar(cadastro);
+                resposta = await AlunoService.cadastrar(cadastro);
             }
 
             if (resposta.status === 201 || resposta.status === 204) {
@@ -102,7 +102,7 @@ export default function AbaAlunos() {
         if (confirm('Deseja realmente inativar este aluno?') == false) return;
 
         try {
-            const resposta = await alunoService.excluir(id);
+            const resposta = await AlunoService.excluir(id);
 
             if (resposta.status === 204) {
                 alert('Aluno excluído com sucesso!');

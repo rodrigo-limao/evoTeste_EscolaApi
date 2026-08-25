@@ -1,10 +1,9 @@
-const API_URL = 'http://localhost:8080/api';
+import { apiClient } from "./apiClient";
 
-export const matriculaService = {
+export const MatriculaService = {
     async matricular(alunoId, turmaId) {
-        return await fetch(`${API_URL}/matriculas`, {
+        return await apiClient(`/matriculas`, {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
                 alunoId: parseInt(alunoId),
                 turmaId: parseInt(turmaId)

@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
-import { turmaService } from '../services/TurmaService';
-import { matriculaService } from '../services/MatriculaService';
-import { alunoService } from '../services/AlunoService';
+import { TurmaService } from '../services/TurmaService';
+import { MatriculaService } from '../services/MatriculaService';
+import { AlunoService } from '../services/AlunoService';
 
 export default function AbaMatriculas() {
     const [turmas, setTurmas] = useState([]);
@@ -18,8 +18,8 @@ export default function AbaMatriculas() {
         setLoading(true);
 
         try {
-            const listaTurmas = await turmaService.listar();
-            const listaAlunos = await alunoService.listarTodosAtivos();
+            const listaTurmas = await TurmaService.listar();
+            const listaAlunos = await AlunoService.listarTodosAtivos();
             setTurmas(listaTurmas);
             setAlunosAtivos(listaAlunos);
         } catch (e) {
@@ -43,7 +43,7 @@ export default function AbaMatriculas() {
         }
 
         try {
-            const resposta = await matriculaService.matricular(alunoSelecionado, turmaSelecionada);
+            const resposta = await MatriculaService.matricular(alunoSelecionado, turmaSelecionada);
 
             if (resposta.status === 201) {
                 alert('Matrícula realizada com sucesso!');

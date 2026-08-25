@@ -1,7 +1,8 @@
 import { useState } from 'react';
 import MenuNavegacao from './components/MenuNavegacao';
 import AbaAlunos from './components/AbaAlunos';
-import AbaMatriculas from './components/AbaMatriculas'
+import AbaMatriculas from './components/AbaMatriculas';
+import AbaRelatorios from './components/AbaRelatorios';
 
 export default function App() {
     // O "useState" cria uma variável de estado (abaAtiva)
@@ -15,15 +16,8 @@ export default function App() {
 
             <main className="container mx-auto px-6 py-8">
                 {abaAtiva === 'alunos' && <AbaAlunos />}
-
                 {abaAtiva === 'matriculas' && <AbaMatriculas />}
-
-                {abaAtiva === 'relatorios' && (
-                    <div className="bg-white rounded-lg shadow p-6">
-                        <h2 className="text-xl font-bold mb-4 text-gray-800">Relatório Consolidado de Turmas</h2>
-                        <p className="text-gray-600 text-sm">Exibição de dados agregados vindos diretamente das queries de banco.</p>
-                    </div>
-                )}
+                {abaAtiva === 'relatorios' && <AbaRelatorios />}
             </main>
         </div>
     );

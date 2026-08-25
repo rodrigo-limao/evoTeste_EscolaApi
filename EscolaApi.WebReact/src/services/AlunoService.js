@@ -1,10 +1,9 @@
-const API_URL = 'http://localhost:8080/api';
+import { apiClient } from "./apiClient";
 
-export const alunoService = {
+export const AlunoService = {
     // Chamada da listagem com filtro e paginação
     async listar(buscaNome, pagina, pageSize = 5) {
-        const url = `${API_URL}/alunos?nome=${buscaNome}&page=${pagina}&pageSize=${pageSize}`;
-        const resposta = await fetch(url);
+        const resposta = await apiClient(`/alunos?nome=${buscaNome}&page=${pagina}&pageSize=${pageSize}`);
         if (!resposta.ok) throw new Error('Erro ao buscar alunos');
         return await resposta.json();
     },
@@ -12,8 +11,7 @@ export const alunoService = {
     // Busca uma lista sem paginação para alimentar o dropdown do mldal
     // pageSize = 100 (apenas para desenvolvimento)
     async listarTodosAtivos() {
-        const url = `${API_URL}/alunos?nome=&page=1&pageSize=100`;
-        const resposta = await fetch(url);
+        const resposta = await apiClient(`/alunos?nome=&page=1&pageSize=100`);
         if (!resposta.ok) throw new Error('Erro ao buscar todos os alunos');
         const dados = await resposta.json();
         // Filtro para garantir apenas os ativos
@@ -22,18 +20,16 @@ export const alunoService = {
 
     // Chamada do novo cadastro
     async cadastrar(aluno) {
-        return await fetch(`${API_URL}/alunos`, {
+        return await apiClient(`/alunos`, {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(aluno)
         });
     },
 
     // Chamada da edição
     async atualizar(id, aluno) {
-        return await fetch(`${API_URL}/alunos/${id}`, {
+        return await apiClient(`/alunos/${id}`, {
             method: 'PUT',
-            headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
                 id,
                 nome: aluno.nome,
@@ -45,7 +41,7 @@ export const alunoService = {
 
     // Chamada da exclusão lógica
     async excluir(id) {
-        return await fetch(`${API_URL}/alunos/${id}`, {
+        return await apiClient(`/alunos/${id}`, {
             method: 'DELETE'
         });
     }
