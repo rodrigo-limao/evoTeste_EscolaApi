@@ -1,3 +1,8 @@
+> ⚠️ **Projeto de teste técnico.** ⚠️
+> Este repositório foi desenvolvido como parte de um processo seletivo e já foi encerrado.
+> Não está em manutenção e não representa um projeto ativo.
+
+
 # Escola API - Painel Administrativo de Matrículas
 
 Este repositório contém a solução completa para o controle de matrículas escolares, integrando um back-end robusto e transacional com um front-end moderno, reativo e componentizado.
